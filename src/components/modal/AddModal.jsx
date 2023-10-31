@@ -135,7 +135,6 @@ const AddModal = ({ open, onClose }) => {
                   <MenuItem value={'Landslide'}>Landslide</MenuItem>
                   <MenuItem value={'Flash flood'}>Flash flood</MenuItem>
                   <MenuItem value={'Volcanic eruption'}>Volcanic eruption</MenuItem>
-                  <MenuItem value={'Fire'}>Fire</MenuItem>
                 </Select>
               </FormControl>
             </Grid>

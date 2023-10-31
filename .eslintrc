@@ -91,7 +91,7 @@
       }
     ],
     "no-unused-vars": [
-      1,
+      0,
       {
         "args": "none"
       }

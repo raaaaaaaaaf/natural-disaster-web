@@ -4,6 +4,7 @@ import Loader from 'src/components/loader/Loader';
 import { AuthContext } from 'src/context/AuthContext';
 
 import DashboardLayout from 'src/layouts/dashboard';
+import MapPage from 'src/pages/MapPage';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
@@ -60,7 +61,8 @@ export default function Router() {
         { path: 'app', element: <ProtectedRoute><IndexPage /></ProtectedRoute> },
         { path: 'user', element: <ProtectedRoute><UserPage /></ProtectedRoute> },
         { path: 'products', element: <ProtectedRoute><ProductsPage /></ProtectedRoute> },
-        { path: 'blog', element: <ProtectedRoute><BlogPage /></ProtectedRoute> },
+        { path: 'disaster', element: <ProtectedRoute><BlogPage /></ProtectedRoute> },
+        { path: 'map', element: <ProtectedRoute><MapPage /></ProtectedRoute> },
       ],
     },
     {

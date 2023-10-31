@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import { fDateTime } from 'src/utils/format-time';
 
 import SvgColor from 'src/components/svg-color';
+import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
@@ -19,7 +20,6 @@ export default function PostCard({ post, index }) {
   const latestPostLarge = index === 0;
 
   const latestPost = index === 1 || index === 2;
-
 
   const renderTitle = (
     <Link
@@ -42,12 +42,40 @@ export default function PostCard({ post, index }) {
     </Link>
   );
 
+  let imageSrc;
+
+  switch (typeDisaster) {
+    case 'Tsunami':
+      imageSrc = '/assets/disaster/tsunami.jpg';
+      break;
+    case 'Tropical cyclone':
+      imageSrc = '/assets/disaster/tropical.jpg';
+      break;
+    case 'Typhoon':
+      imageSrc = '/assets/disaster/typhoon.jpg';
+      break;
+    case 'Earthquake':
+      imageSrc = '/assets/disaster/earthquake.jpg';
+      break;
+    case 'Landslide':
+      imageSrc = '/assets/disaster/landslide.jpg';
+      break;
+    case 'Flash flood':
+      imageSrc = '/assets/disaster/flood.jpg';
+      break;
+    case 'Volcanic eruption':
+      imageSrc = '/assets/disaster/volcanic.jpg';
+      break;
+    // Add cases for other types of disasters here
+    default:
+      imageSrc = '/assets/disaster/default.jpg'; // Default image path
+  }
 
   const renderCover = (
     <Box
       component="img"
       alt={disasterName}
-      src= '/assets/background/overlay_2.jpg'
+      src={imageSrc}
       sx={{
         top: 0,
         width: 1,
@@ -56,6 +84,7 @@ export default function PostCard({ post, index }) {
         position: 'absolute',
       }}
     />
+    
   );
 
   const renderDate = (
@@ -75,25 +104,11 @@ export default function PostCard({ post, index }) {
     </Typography>
   );
 
-  const renderShape = (
-    <SvgColor
-      color="paper"
-      src="/assets/icons/shape-avatar.svg"
-      sx={{
-        width: 80,
-        height: 36,
-        zIndex: 9,
-        bottom: -15,
-        position: 'absolute',
-        color: 'background.paper',
-        ...((latestPostLarge || latestPost) && { display: 'none' }),
-      }}
-    />
-  );
 
   return (
     <Grid xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 6 : 3}>
       <Card>
+        
         <Box
           sx={{
             position: 'relative',
@@ -117,7 +132,7 @@ export default function PostCard({ post, index }) {
             }),
           }}
         >
-          {renderShape}
+          
 
           {/* {renderAvatar} */}
 
@@ -134,6 +149,7 @@ export default function PostCard({ post, index }) {
             }),
           }}
         >
+          
           {renderDate}
 
           {renderTitle}
