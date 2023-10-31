@@ -61,7 +61,7 @@ export default function LoginView() {
       const user = auth.currentUser;
       await setDoc(doc(db, "users", user.uid), {
         uid: user.uid,
-        displayname: user.displayName,
+        displayName: user.displayName,
         email: user.email,
         role: "User"
       })
