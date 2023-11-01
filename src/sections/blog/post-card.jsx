@@ -8,21 +8,49 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
 import { fDateTime } from 'src/utils/format-time';
-
-import SvgColor from 'src/components/svg-color';
+import { useRouter } from 'src/routes/hooks';
 import Iconify from 'src/components/iconify';
+import { IconButton, MenuItem, Popover } from '@mui/material';
+import { useState } from 'react';
+import EditModal from 'src/components/modal/EditModal';
+import { deleteDoc, doc } from 'firebase/firestore';
+import { db } from 'src/firebase/firebaseConfig';
+import { toast } from 'react-toastify';
 
 // ----------------------------------------------------------------------
 
 export default function PostCard({ post, index }) {
-  const { about, dateNtime, disasterName, typeDisaster, latitude, longitude } = post;
+  const { id, dateNtime, disasterName, typeDisaster } = post;
 
   const latestPostLarge = index === 0;
 
   const latestPost = index === 1 || index === 2;
 
+  const router = useRouter();
+
+  const [open, setOpen] = useState(false)
+
+  const handeLink = () => {
+    router.push(`view/${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const dataRef = doc(db, "data_disaster", id)
+      await deleteDoc(dataRef)
+      toast.success("Deleted successfully", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+      });
+    } catch(err) {
+      console.error(err);
+    }
+  }
+
   const renderTitle = (
     <Link
+      onClick={handeLink}
       color="inherit"
       variant="subtitle2"
       underline="hover"
@@ -38,7 +66,7 @@ export default function PostCard({ post, index }) {
         }),
       }}
     >
-      {disasterName}
+      {typeDisaster}
     </Link>
   );
 
@@ -84,7 +112,6 @@ export default function PostCard({ post, index }) {
         position: 'absolute',
       }}
     />
-    
   );
 
   const renderDate = (
@@ -104,11 +131,32 @@ export default function PostCard({ post, index }) {
     </Typography>
   );
 
+  const renderMoreOptions = (
+    <Link
+      color="#fff"
+      sx={{
+        position: 'absolute',
+        top: '8px', // You can adjust the positioning as needed
+        right: '8px', // You can adjust the positioning as needed
+        zIndex: 1,
+        '&:hover': {
+          textDecoration: 'none',
+        },
+      }}
+    >
+      <IconButton onClick={() => setOpen(true)} size="small" color="inherit">
+        <Iconify icon={'eva:edit-fill'} />
+      </IconButton>
+      <IconButton onClick={() => handleDelete(id)} size="small" sx={{ color: 'error.main' }}>
+        <Iconify icon={'eva:trash-2-outline'} />
+      </IconButton>
+      <EditModal open={open} onClose={()=> setOpen(false)} id={id} data={post}/>
+    </Link>
+  );
 
   return (
     <Grid xs={12} sm={latestPostLarge ? 12 : 6} md={latestPostLarge ? 6 : 3}>
       <Card>
-        
         <Box
           sx={{
             position: 'relative',
@@ -132,11 +180,8 @@ export default function PostCard({ post, index }) {
             }),
           }}
         >
-          
-
-          {/* {renderAvatar} */}
-
           {renderCover}
+          {renderMoreOptions}
         </Box>
 
         <Box
@@ -149,12 +194,9 @@ export default function PostCard({ post, index }) {
             }),
           }}
         >
-          
           {renderDate}
 
           {renderTitle}
-
-          {/* {renderInfo} */}
         </Box>
       </Card>
     </Grid>

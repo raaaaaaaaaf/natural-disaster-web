@@ -40,14 +40,14 @@ export default function BlogView() {
     }
     fetchData();
   }, [])
-  console.log(disaster)
+  
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Blog</Typography>
+        <Typography variant="h4">Natural Disaster</Typography>
 
         <Button onClick={() => setModalOpen(true)} variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
-          New Post
+          New 
         </Button>
         <AddModal open={modalOpen} onClose={()=> setModalOpen(false)}/>
       </Stack>
