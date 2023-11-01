@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { db } from 'src/firebase/firebaseConfig';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-
+import { fDateTime } from 'src/utils/format-time';
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoicnJpZGFkIiwiYSI6ImNsb2JvcXBldzB2ajYyc3BldXZtaHZtbHUifQ.o-XzbOPQqJ3YR_SllC0iIA';
@@ -15,7 +15,6 @@ const DisasterPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { id } = useParams();
-
 
   useEffect(() => {
     if (id) {
@@ -41,7 +40,7 @@ const DisasterPage = () => {
     }
   }, [id]);
 
-  console.log(disaster)
+  console.log(disaster);
 
   useEffect(() => {
     if (loading) {
@@ -57,10 +56,19 @@ const DisasterPage = () => {
       });
 
       const marker = new mapboxgl.Marker({
-        element: createCustomMarkerElement(disaster.typeDisaster)
+        element: createCustomMarkerElement(disaster.typeDisaster),
       })
         .setLngLat([disaster.longitude, disaster.latitude])
         .addTo(map);
+      // Create a popup for the marker
+      const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+        `<h3>${disaster.typeDisaster}</h3><p>${fDateTime(disaster.dateNtime)}<br>Latitude: ${
+          disaster.latitude
+        }<br>Longitude: ${disaster.longitude}<br> ${disaster.about}</p>`
+      );
+
+      // Attach the popup to the marker
+      marker.setPopup(popup);
 
       return () => {
         map.remove();
@@ -71,31 +79,31 @@ const DisasterPage = () => {
   function createCustomMarkerElement(typeDisaster) {
     const iconElement = document.createElement('img');
     switch (typeDisaster) {
-        case 'Tsunami':
-          iconElement.src = '/assets/disasterIcon/tsunami.png';
-          break;
-        case 'Tropical cyclone':
-          iconElement.src = '/assets/disasterIcon/typhoon.png';
-          break;
-        case 'Typhoon':
-          iconElement.src = '/assets/disasterIcon/typhoon.png';
-          break;
-        case 'Earthquake':
-          iconElement.src = '/assets/disasterIcon/earthquake.png';
-          break;
-        case 'Landslide':
-          iconElement.src = '/assets/disasterIcon/landslide.png';
-          break;
-        case 'Flash flood':
-          iconElement.src = '/assets/disasterIcon/flood.png';
-          break;
-        case 'Volcanic eruption':
-          iconElement.src = '/assets/disasterIcon/volcanic.png';
-          break;
-        // Add cases for other types of disasters here
-        default:
-          iconElement.src = '/assets/disaster/default.jpg'; // Default image path
-      }
+      case 'Tsunami':
+        iconElement.src = '/assets/disasterIcon/tsunami.png';
+        break;
+      case 'Tropical cyclone':
+        iconElement.src = '/assets/disasterIcon/typhoon.png';
+        break;
+      case 'Typhoon':
+        iconElement.src = '/assets/disasterIcon/typhoon.png';
+        break;
+      case 'Earthquake':
+        iconElement.src = '/assets/disasterIcon/earthquake.png';
+        break;
+      case 'Landslide':
+        iconElement.src = '/assets/disasterIcon/landslide.png';
+        break;
+      case 'Flash flood':
+        iconElement.src = '/assets/disasterIcon/flood.png';
+        break;
+      case 'Volcanic eruption':
+        iconElement.src = '/assets/disasterIcon/volcanic.png';
+        break;
+      // Add cases for other types of disasters here
+      default:
+        iconElement.src = '/assets/disaster/default.jpg'; // Default image path
+    }
     iconElement.style.width = '50px'; // Set the width of the icon
     iconElement.style.height = '50px'; // Set the height of the icon
     return iconElement;
@@ -129,8 +137,6 @@ const DisasterPage = () => {
           marginTop: '20px',
         }}
       />
-
-      
     </Container>
   );
 };

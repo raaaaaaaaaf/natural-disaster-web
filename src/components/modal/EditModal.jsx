@@ -15,12 +15,12 @@ import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
-import { addDoc, collection, doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import { db } from 'src/firebase/firebaseConfig';
 import { toast } from 'react-toastify';
 import MapPopup from '../maps/MapPopup';
 
-const EditModal = ({ open, onClose, id, data }) => {
+const EditModal = ({ open, onClose, id }) => {
   const [coords, setCoords] = useState({
     lng: 0,
     lat: 0,
@@ -60,7 +60,7 @@ const EditModal = ({ open, onClose, id, data }) => {
         latitude: coords.lat,
       };
       await updateDoc(dataRef, data);
-      toast.success('Disaster has been edited.', {
+      toast.success('Natural disaster information has been edited', {
         position: 'top-right',
         autoClose: 3000, // Close the toast after 3 seconds
         hideProgressBar: false,
@@ -128,7 +128,6 @@ const EditModal = ({ open, onClose, id, data }) => {
                     <em>None</em>
                   </MenuItem>
                   <MenuItem value={'Tsunami'}>Tsunami</MenuItem>
-                  <MenuItem value={'Tropical cyclone'}>Tropical cyclone</MenuItem>
                   <MenuItem value={'Typhoon'}>Typhoon</MenuItem>
                   <MenuItem value={'Earthquake'}>Earthquake</MenuItem>
                   <MenuItem value={'Landslide'}>Landslide</MenuItem>

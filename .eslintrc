@@ -71,6 +71,9 @@
     "react/jsx-curly-brace-presence": 0,
     "react/self-closing-comp": 0,
     "react/no-unused-prop-types": "off",
+    "consistent-return": "off",
+    "prefer-template": "off",
+    "no-shadow": "off",
     "jsx-a11y/control-has-associated-label": 0,
     "react/jsx-no-useless-fragment": [
       1,

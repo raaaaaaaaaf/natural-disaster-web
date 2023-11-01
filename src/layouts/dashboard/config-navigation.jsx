@@ -1,5 +1,5 @@
 import SvgColor from 'src/components/svg-color';
-
+import Iconify from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 const icon = (name) => (
@@ -10,23 +10,17 @@ const navConfig = [
   {
     title: 'dashboard',
     path: '/',
-    icon: icon('ic_analytics'),
-  },
-  {
-    title: 'user',
-    path: '/user',
-    icon: icon('ic_user'),
+    icon: <Iconify icon={'carbon:analytics'} />,
   },
   {
     title: 'Disaster Management',
     path: '/disaster',
-    icon: icon('ic_disabled'),
+    icon: <Iconify icon={'el:warning-sign'} />,
   },
-
   {
     title: 'Map',
     path: '/map',
-    icon: icon('ic_user'),
+    icon: <Iconify icon={'carbon:map'} />,
   },
 
 ];

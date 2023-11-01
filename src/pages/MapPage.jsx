@@ -5,6 +5,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { Helmet } from 'react-helmet-async';
 import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from 'src/firebase/firebaseConfig';
+import { fDateTime } from 'src/utils/format-time';
 
 
 mapboxgl.accessToken =
@@ -46,13 +47,19 @@ const MapPage = () => {
       style: 'mapbox://styles/mapbox/dark-v11',
     });
 
-    // Create a new mapboxgl marker with a custom icon
     coords.forEach((coord) => {
       const marker = new mapboxgl.Marker({
         element: createCustomMarkerElement(coord.typeDisaster)
       })
         .setLngLat([coord.longitude, coord.latitude])
         .addTo(map);
+  
+      // Create a popup for the marker
+      const popup = new mapboxgl.Popup({ offset: 25 })
+        .setHTML(`<h3>${coord.typeDisaster}</h3><p>${fDateTime(coord.dateNtime)}<br>Latitude: ${coord.latitude}<br>Longitude: ${coord.longitude}<br> ${coord.about}</p>`);
+  
+      // Attach the popup to the marker
+      marker.setPopup(popup);
     });
 
     // Clean up the map when the component unmounts
@@ -66,9 +73,6 @@ const MapPage = () => {
     switch (typeDisaster) {
         case 'Tsunami':
           iconElement.src = '/assets/disasterIcon/tsunami.png';
-          break;
-        case 'Tropical cyclone':
-          iconElement.src = '/assets/disasterIcon/typhoon.png';
           break;
         case 'Typhoon':
           iconElement.src = '/assets/disasterIcon/typhoon.png';
@@ -96,7 +100,7 @@ const MapPage = () => {
   return (
     <>
       <Helmet>
-        <title> Disaster Mapping </title>
+        <title> Disaster Mapping | NDWBIS</title>
       </Helmet>
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>

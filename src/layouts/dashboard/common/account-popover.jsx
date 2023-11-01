@@ -13,23 +13,9 @@ import { signOut } from 'firebase/auth';
 import { auth } from 'src/firebase/firebaseConfig';
 import { useRouter } from 'src/routes/hooks';
 import { AuthContext } from 'src/context/AuthContext';
-import avt from '../../../assets/avatar.jpg'
-// ----------------------------------------------------------------------
+import avt from '../../../assets/avatar.jpg';
 
-const MENU_OPTIONS = [
-  {
-    label: 'Home',
-    icon: 'eva:home-fill',
-  },
-  {
-    label: 'Profile',
-    icon: 'eva:person-fill',
-  },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
-  },
-];
+// ----------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
 
@@ -111,14 +97,6 @@ export default function AccountPopover() {
             </Box>
 
             <Divider sx={{ borderStyle: 'dashed' }} />
-
-            {MENU_OPTIONS.map((option) => (
-              <MenuItem key={option.label} onClick={handleClose}>
-                {option.label}
-              </MenuItem>
-            ))}
-
-            <Divider sx={{ borderStyle: 'dashed', m: 0 }} />
 
             <MenuItem
               disableRipple

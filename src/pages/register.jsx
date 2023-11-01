@@ -8,7 +8,7 @@ export default function RegisterPage() {
   return (
     <>
       <Helmet>
-        <title> Login | Minimal UI </title>
+        <title> Register | NDWBIS </title>
       </Helmet>
 
       <RegisterView />

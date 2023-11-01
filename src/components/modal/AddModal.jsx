@@ -60,7 +60,7 @@ const AddModal = ({ open, onClose }) => {
         latitude: coords.lat,
       }
       await addDoc(dataRef, data)
-      toast.success("Information has been added.", {
+      toast.success("Natural disaster data added", {
         position: "top-right",
         autoClose: 3000, // Close the toast after 3 seconds
         hideProgressBar: false,
@@ -129,7 +129,6 @@ const AddModal = ({ open, onClose }) => {
                     <em>None</em>
                   </MenuItem>
                   <MenuItem value={'Tsunami'}>Tsunami</MenuItem>
-                  <MenuItem value={'Tropical cyclone'}>Tropical cyclone</MenuItem>
                   <MenuItem value={'Typhoon'}>Typhoon</MenuItem>
                   <MenuItem value={'Earthquake'}>Earthquake</MenuItem>
                   <MenuItem value={'Landslide'}>Landslide</MenuItem>

@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import { fDateTime } from 'src/utils/format-time';
 import { useRouter } from 'src/routes/hooks';
 import Iconify from 'src/components/iconify';
-import { IconButton, MenuItem, Popover } from '@mui/material';
+import { IconButton } from '@mui/material';
 import { useState } from 'react';
 import EditModal from 'src/components/modal/EditModal';
 import { deleteDoc, doc } from 'firebase/firestore';
@@ -38,7 +38,7 @@ export default function PostCard({ post, index }) {
     try {
       const dataRef = doc(db, "data_disaster", id)
       await deleteDoc(dataRef)
-      toast.success("Deleted successfully", {
+      toast.success("Natural disaster info removed", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -75,9 +75,6 @@ export default function PostCard({ post, index }) {
   switch (typeDisaster) {
     case 'Tsunami':
       imageSrc = '/assets/disaster/tsunami.jpg';
-      break;
-    case 'Tropical cyclone':
-      imageSrc = '/assets/disaster/tropical.jpg';
       break;
     case 'Typhoon':
       imageSrc = '/assets/disaster/typhoon.jpg';
