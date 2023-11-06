@@ -7,16 +7,13 @@ import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from 'src/firebase/firebaseConfig';
 import { fDateTime } from 'src/utils/format-time';
 
-
 mapboxgl.accessToken =
   'pk.eyJ1IjoicnJpZGFkIiwiYSI6ImNsb2JvcXBldzB2ajYyc3BldXZtaHZtbHUifQ.o-XzbOPQqJ3YR_SllC0iIA';
 
 const MapPage = () => {
   const [coords, setCoords] = useState([]);
 
-
-
-  console.log(coords.typeDisaster)
+  console.log(coords.typeDisaster);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,15 +46,18 @@ const MapPage = () => {
 
     coords.forEach((coord) => {
       const marker = new mapboxgl.Marker({
-        element: createCustomMarkerElement(coord.typeDisaster)
+        element: createCustomMarkerElement(coord.typeDisaster),
       })
         .setLngLat([coord.longitude, coord.latitude])
         .addTo(map);
-  
+
       // Create a popup for the marker
-      const popup = new mapboxgl.Popup({ offset: 25 })
-        .setHTML(`<h3>${coord.typeDisaster}</h3><p>${fDateTime(coord.dateNtime)}<br>Latitude: ${coord.latitude}<br>Longitude: ${coord.longitude}<br> ${coord.about}</p>`);
-  
+      const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
+        `<h3>${coord.typeDisaster}</h3><p>${fDateTime(coord.dateNtime)}<br>Latitude: ${
+          coord.latitude
+        }<br>Longitude: ${coord.longitude}<br> ${coord.about}</p>`
+      );
+
       // Attach the popup to the marker
       marker.setPopup(popup);
     });
@@ -71,28 +71,28 @@ const MapPage = () => {
   function createCustomMarkerElement(typeDisaster) {
     const iconElement = document.createElement('img');
     switch (typeDisaster) {
-        case 'Tsunami':
-          iconElement.src = '/assets/disasterIcon/tsunami.png';
-          break;
-        case 'Typhoon':
-          iconElement.src = '/assets/disasterIcon/typhoon.png';
-          break;
-        case 'Earthquake':
-          iconElement.src = '/assets/disasterIcon/earthquake.png';
-          break;
-        case 'Landslide':
-          iconElement.src = '/assets/disasterIcon/landslide.png';
-          break;
-        case 'Flash flood':
-          iconElement.src = '/assets/disasterIcon/flood.png';
-          break;
-        case 'Volcanic eruption':
-          iconElement.src = '/assets/disasterIcon/volcanic.png';
-          break;
-        // Add cases for other types of disasters here
-        default:
-          iconElement.src = '/assets/disaster/default.jpg'; // Default image path
-      }
+      case 'Tsunami':
+        iconElement.src = '/assets/disasterIcon/tsunami.png';
+        break;
+      case 'Typhoon':
+        iconElement.src = '/assets/disasterIcon/typhoon.png';
+        break;
+      case 'Earthquake':
+        iconElement.src = '/assets/disasterIcon/earthquake.png';
+        break;
+      case 'Landslide':
+        iconElement.src = '/assets/disasterIcon/landslide.png';
+        break;
+      case 'Flash flood':
+        iconElement.src = '/assets/disasterIcon/flood.png';
+        break;
+      case 'Volcanic eruption':
+        iconElement.src = '/assets/disasterIcon/volcanic.png';
+        break;
+      // Add cases for other types of disasters here
+      default:
+        iconElement.src = '/assets/disaster/default.jpg'; // Default image path
+    }
     iconElement.style.width = '50px'; // Set the width of the icon
     iconElement.style.height = '50px'; // Set the height of the icon
     return iconElement;
@@ -106,6 +106,22 @@ const MapPage = () => {
         <Typography variant="h4" sx={{ mb: 5 }}>
           Disaster Mapping
         </Typography>
+        <Typography variant="h6" sx={{ mb: 1 }}>
+          Incase of Emergency:
+        </Typography>
+
+        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+          <div >
+            <Typography>Raxiello Adolfo </Typography>
+            <Typography sx={{ mb: 5 }}>09667505839</Typography>
+          </div>
+          <div>
+            
+            <Typography>&nbsp;&nbsp;&nbsp;Daisy Mie Amploquio  </Typography>
+            <Typography sx={{ mb: 5 }}>&nbsp;&nbsp;&nbsp;09059494490</Typography>
+          </div>
+        </div>
+
         <div
           id="map"
           style={{

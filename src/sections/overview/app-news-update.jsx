@@ -13,15 +13,19 @@ import { fToNow } from 'src/utils/format-time';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
+import { useRouter } from 'src/routes/hooks';
 
 // ----------------------------------------------------------------------
 
 export default function AppNewsUpdate({ list }) {
-  
+  const router = useRouter();
 
+  const handeLink = () => {
+    router.push(`/disaster`);
+  };
   return (
     <Card>
-      <CardHeader title="New Natural Disaster"  />
+      <CardHeader title="New Natural Disaster" />
 
       <Scrollbar>
         <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
@@ -35,6 +39,7 @@ export default function AppNewsUpdate({ list }) {
 
       <Box sx={{ p: 2, textAlign: 'right' }}>
         <Button
+          onClick={handeLink}
           size="small"
           color="inherit"
           endIcon={<Iconify icon="eva:arrow-ios-forward-fill" />}
@@ -77,7 +82,7 @@ function NewsItem({ news, image }) {
       </Box>
 
       <Typography variant="caption" sx={{ pr: 3, flexShrink: 0, color: 'text.secondary' }}>
-      {fToNow(new Date(dateNtime.seconds * 1000))}
+        {fToNow(new Date(dateNtime.seconds * 1000))}
       </Typography>
     </Stack>
   );
