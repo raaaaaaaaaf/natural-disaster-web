@@ -106,21 +106,6 @@ const MapPage = () => {
         <Typography variant="h4" sx={{ mb: 5 }}>
           Disaster Mapping
         </Typography>
-        <Typography variant="h6" sx={{ mb: 1 }}>
-          Incase of Emergency:
-        </Typography>
-
-        <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-          <div >
-            <Typography>Raxiello Adolfo </Typography>
-            <Typography sx={{ mb: 5 }}>09667505839</Typography>
-          </div>
-          <div>
-            
-            <Typography>&nbsp;&nbsp;&nbsp;Daisy Mie Amploquio  </Typography>
-            <Typography sx={{ mb: 5 }}>&nbsp;&nbsp;&nbsp;09059494490</Typography>
-          </div>
-        </div>
 
         <div
           id="map"
