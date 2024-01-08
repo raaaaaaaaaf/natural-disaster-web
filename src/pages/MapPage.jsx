@@ -104,7 +104,7 @@ const MapPage = () => {
       </Helmet>
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mb: 5 }}>
-          Disaster Mapping
+          Natural Disaster Mapping
         </Typography>
 
         <div

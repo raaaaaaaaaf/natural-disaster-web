@@ -1,31 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
-
-
-import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
-import TableNoData from '../table-no-data';
-import UserTableRow from '../user-table-row';
-import UserTableHead from '../user-table-head';
-import TableEmptyRows from '../table-empty-rows';
-import UserTableToolbar from '../user-table-toolbar';
+import TableNoData from '../table2-no-data';
+import UserTableHead from '../history-table-head';
+import TableEmptyRows from '../tables-empty-rows';
+import UserTableToolbar from '../history-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 import { collection, getDocs, query } from 'firebase/firestore';
 import { db } from 'src/firebase/firebaseConfig';
+import HistoryTableRow from '../history-table-row';
+import { AuthContext } from 'src/context/AuthContext';
+import _ from 'lodash';
 
 // ----------------------------------------------------------------------
 
-export default function UserPage() {
+export default function HistoryPage() {
   
   const [page, setPage] = useState(0);
 
@@ -43,6 +41,8 @@ export default function UserPage() {
 
   const [loading, setLoading] = useState(true)
 
+  const { year } = useContext(AuthContext)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -55,8 +55,34 @@ export default function UserPage() {
             ...doc.data(),
           });
         });
-        setData(data);
-        setLoading(false);
+        if (year) {
+          const filteredData = data.filter((item) => {
+            // Convert Firestore timestamp to a JavaScript Date object
+            const timestamp = item.dateNtime.toDate();
+
+            // Get the year from the Date object
+            const years = timestamp.getFullYear();
+
+            // Compare the extracted year with year
+            return years === year;
+          });
+
+          // Sort the filtered data by timestamp
+          const sortedData = _.sortBy(
+            filteredData,
+            (item) => item.dateNtime.seconds
+          ).reverse();
+
+          setData(sortedData);
+        } else {
+          // No year, so set the entire data unfiltered
+          const sortedData = _.sortBy(
+            data,
+            (item) => item.dateNtime.seconds
+          ).reverse();
+
+          setData(sortedData);
+        }
       } catch (err) {
         console.error(err);
       }
@@ -124,11 +150,8 @@ export default function UserPage() {
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Users</Typography>
+        <Typography variant="h4">History</Typography>
 
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
-          New User
-        </Button>
       </Stack>
 
       <Card>
@@ -149,28 +172,27 @@ export default function UserPage() {
                 onRequestSort={handleSort}
                 onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'name', label: 'Name' },
-                  { id: 'company', label: 'Company' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
-                  { id: 'status', label: 'Status' },
-                  { id: '' },
+                  { id: 'name', label: 'Disaster Name' },
+                  { id: 'type', label: 'Disaster Type' },
+                  { id: 'location', label: 'Location' },
+                  { id: 'date', label: 'Date and Time' },
+                  
                 ]}
               />
               <TableBody>
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
-                    <UserTableRow
+                    <HistoryTableRow
                       key={row.id}
-                      name={row.name}
-                      role={row.role}
-                      status={row.status}
-                      company={row.company}
-                      avatarUrl={row.avatarUrl}
-                      isVerified={row.isVerified}
-                      selected={selected.indexOf(row.name) !== -1}
-                      handleClick={(event) => handleClick(event, row.name)}
+                      name={row.disasterName}
+                      typeDisaster={row.typeDisaster}
+                      lat={row.latitude}
+                      long={row.longitude}
+                      location={row.location}
+                      dateNtime={row.dateNtime}
+                      selected={selected.indexOf(row.disasterName) !== -1}
+                      handleClick={(event) => handleClick(event, row.disasterName)}
                     />
                   ))}
 

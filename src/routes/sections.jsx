@@ -6,6 +6,8 @@ import { AuthContext } from 'src/context/AuthContext';
 import DashboardLayout from 'src/layouts/dashboard';
 import DisasterPage from 'src/pages/DisasterPage';
 import MapPage from 'src/pages/MapPage';
+import ProneAreaPage from 'src/pages/ProneAreaPage';
+import HistoryPage from 'src/pages/history';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
@@ -62,6 +64,8 @@ export default function Router() {
         { path: 'app', element: <ProtectedRoute><IndexPage /></ProtectedRoute> },
         { path: 'user', element: <ProtectedRoute><UserPage /></ProtectedRoute> },
         { path: 'products', element: <ProtectedRoute><ProductsPage /></ProtectedRoute> },
+        { path: 'history', element: <ProtectedRoute><HistoryPage /></ProtectedRoute> },
+        { path: 'prone', element: <ProtectedRoute><ProneAreaPage /></ProtectedRoute> },
         { path: 'disaster', element: <ProtectedRoute><BlogPage /></ProtectedRoute> },
         { path: 'disaster/view/:id', element: <ProtectedRoute><DisasterPage /></ProtectedRoute> },
         { path: 'map', element: <ProtectedRoute><MapPage /></ProtectedRoute> },

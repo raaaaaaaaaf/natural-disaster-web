@@ -10,6 +10,8 @@ export const AuthContextProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [year, setYear] = useState('');
+ 
 
   useEffect(() => {
     // Subscribe to authentication state changes
@@ -43,7 +45,7 @@ export const AuthContextProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
   return (
-    <AuthContext.Provider value={{ currentUser, userData, loading, error }}>
+    <AuthContext.Provider value={{ currentUser, userData, loading, error, year, setYear }}>
       {children}
     </AuthContext.Provider>
   );

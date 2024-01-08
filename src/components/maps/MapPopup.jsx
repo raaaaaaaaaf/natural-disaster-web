@@ -5,26 +5,21 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 mapboxgl.accessToken =
   'pk.eyJ1IjoicnJpZGFkIiwiYSI6ImNsb2JvcXBldzB2ajYyc3BldXZtaHZtbHUifQ.o-XzbOPQqJ3YR_SllC0iIA';
 
-const MapPopup = ({ coords, setCoords }) => {
+const MapPopup = ({ coords, setCoords, address, setAddress }) => {
+
   useEffect(() => {
     const map = new mapboxgl.Map({
       container: 'map',
-      zoom: 10,
+      zoom: 12,
       center: [125.493457, 9.790568],
-      // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
       style: 'mapbox://styles/mapbox/dark-v11',
     });
 
-    // Initialize marker without setting a location initially
     const marker = new mapboxgl.Marker();
 
-    // Add map controls, layers, popups, etc. as needed
-
-    // Add an event listener to handle map clicks
-    map.on('click', (e) => {
+    map.on('click', async (e) => {
       const { lng, lat } = e.lngLat;
 
-      // Round the lng and lat values to 6 decimal places
       const roundedLng = lng.toFixed(6);
       const roundedLat = lat.toFixed(6);
 
@@ -33,13 +28,37 @@ const MapPopup = ({ coords, setCoords }) => {
 
       // Update the state with the rounded coordinates
       setCoords({ lng: roundedLng, lat: roundedLat });
+
+      try {
+        // Reverse geocode to get the address
+        const response = await fetch(
+          `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=pk.eyJ1IjoicnJpZGFkIiwiYSI6ImNsb2JvcXBldzB2ajYyc3BldXZtaHZtbHUifQ.o-XzbOPQqJ3YR_SllC0iIA`
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch address');
+        }
+
+        const data = await response.json();
+
+        // Extract the address from the response
+        const firstFeature = data.features[0];
+        const formattedAddress = firstFeature.place_name;
+
+        // Update the state with the address
+        setAddress(formattedAddress);
+      } catch (error) {
+        console.error('Error fetching address:', error.message);
+      }
     });
 
-    // Clean up the map when the component unmounts
+
     return () => {
       map.remove();
     };
-  }, [setCoords]);
+  }, [setCoords, setAddress]);
+
+
   return (
     <div
       id="map"

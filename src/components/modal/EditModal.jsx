@@ -19,12 +19,14 @@ import { doc, updateDoc } from 'firebase/firestore';
 import { db } from 'src/firebase/firebaseConfig';
 import { toast } from 'react-toastify';
 import MapPopup from '../maps/MapPopup';
+import { useNavigate } from 'react-router-dom';
 
 const EditModal = ({ open, onClose, id }) => {
   const [coords, setCoords] = useState({
     lng: 0,
     lat: 0,
   });
+  const [address, setAddress] = useState('')
 
   const [formData, setFormData] = useState({
     disasterName: '',
@@ -33,6 +35,8 @@ const EditModal = ({ open, onClose, id }) => {
   });
 
   const [selectedDateTime, setSelectedDateTime] = useState(dayjs('2023-11-01T15:30'));
+
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -50,6 +54,22 @@ const EditModal = ({ open, onClose, id }) => {
 
   const handleEdit = async (id) => {
     try {
+      if (
+        !formData.disasterName ||
+        !formData.about ||
+        !formData.typeDisaster ||
+        !selectedDateTime ||
+        !coords.lng ||
+        !coords.lat ||
+        !address
+      ) {
+        toast.error("Please fill out all fields.", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+        });
+        return; // Exit the function if validation fails
+      }
       const dataRef = doc(db, 'data_disaster', id);
       const data = {
         disasterName: formData.disasterName,
@@ -58,6 +78,7 @@ const EditModal = ({ open, onClose, id }) => {
         dateNtime: selectedDateTime.toDate(),
         longitude: coords.lng,
         latitude: coords.lat,
+        location: address,
       };
       await updateDoc(dataRef, data);
       toast.success('Natural disaster information has been edited', {
@@ -66,12 +87,14 @@ const EditModal = ({ open, onClose, id }) => {
         hideProgressBar: false,
       });
       onClose();
+      navigate('/disaster')
     } catch (err) {
       console.error(err);
     }
   };
 
   console.log(coords);
+  console.log(address)
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle>Edit Disaster</DialogTitle>
@@ -137,7 +160,7 @@ const EditModal = ({ open, onClose, id }) => {
               </FormControl>
             </Grid>
           </Grid>
-          <MapPopup coords={coords} setCoords={setCoords} />
+          <MapPopup coords={coords} setCoords={setCoords} address={address} setAddress={setAddress}/>
         </div>
       </DialogContent>
       <DialogActions>

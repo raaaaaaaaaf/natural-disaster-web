@@ -16,11 +16,12 @@ import EditModal from 'src/components/modal/EditModal';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { db } from 'src/firebase/firebaseConfig';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
 export default function PostCard({ post, index }) {
-  const { id, dateNtime, disasterName, typeDisaster } = post;
+  const { id, dateNtime, disasterName, typeDisaster, location } = post;
 
   const latestPostLarge = index === 0;
 
@@ -29,6 +30,8 @@ export default function PostCard({ post, index }) {
   const router = useRouter();
 
   const [open, setOpen] = useState(false)
+
+  const navigate = useNavigate();
 
   const handeLink = () => {
     router.push(`view/${id}`);
@@ -43,6 +46,7 @@ export default function PostCard({ post, index }) {
         autoClose: 3000,
         hideProgressBar: false,
       });
+      navigate('/disaster')
     } catch(err) {
       console.error(err);
     }
@@ -66,7 +70,8 @@ export default function PostCard({ post, index }) {
         }),
       }}
     >
-      {typeDisaster}
+     <Typography variant='subtitle1'>{typeDisaster} </Typography> 
+     <Typography variant='body1'>{location}</Typography>
     </Link>
   );
 
